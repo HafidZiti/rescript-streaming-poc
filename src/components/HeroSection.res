@@ -83,9 +83,11 @@ module Styles = {
 }
 
 @react.component
-let make = () => {
+let make = (~onSearch: string => unit) => {
   let {t} = I18nContext.useI18n()
   let (query, setQuery) = React.useState(() => "")
+
+  let handleSearch = () => onSearch(query)
 
   <div className=Styles.hero>
     <div className=Styles.overlay />
@@ -98,8 +100,15 @@ let make = () => {
           placeholder=t.searchPlaceholder
           value=query
           onChange={e => setQuery(_ => ReactEvent.Form.target(e)["value"])}
+          onKeyDown={e => {
+            if ReactEvent.Keyboard.key(e) == "Enter" {
+              handleSearch()
+            }
+          }}
         />
-        <button className=Styles.searchBtn> {React.string(t.searchBtn)} </button>
+        <button className=Styles.searchBtn onClick={_ => handleSearch()}>
+          {React.string(t.searchBtn)}
+        </button>
       </div>
     </div>
   </div>
