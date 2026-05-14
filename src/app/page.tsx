@@ -1,13 +1,32 @@
-"use client";
+import ClientLayout from "./ClientLayout";
+import { fetchTrending } from "../lib/tmdb-trending";
+import { fetchSeries } from "../lib/tmdb-series";
+import { fetchDocumentaries } from "../lib/tmdb-docs";
+import { fetchTvShows } from "../lib/tmdb-tvshows";
+import { fetchPopularMovies } from "../lib/tmdb-movies";
 
-import { make as I18nProvider } from "../contexts/I18nContext.gen";
-import { make as MediaGrid } from "../components/zones/MediaGrid.gen";
-import { mockMovies } from "../core/MockData.gen";
+export default async function Home() {
+  const [
+    trendingItems,
+    seriesItems,
+    docsItems,
+    tvShowItems,
+    popularMoviesItems,
+  ] = await Promise.all([
+    fetchTrending(),
+    fetchSeries(),
+    fetchDocumentaries(),
+    fetchTvShows(),
+    fetchPopularMovies(),
+  ]);
 
-export default function Home() {
   return (
-    <I18nProvider>
-      <MediaGrid movies={mockMovies} />
-    </I18nProvider>
+    <ClientLayout
+      trendingItems={trendingItems}
+      seriesItems={seriesItems}
+      docsItems={docsItems}
+      tvShowItems={tvShowItems}
+      popularMoviesItems={popularMoviesItems}
+    />
   );
 }

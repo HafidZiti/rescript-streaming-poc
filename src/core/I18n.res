@@ -7,7 +7,7 @@ type t = {
   badgeDocumentary: string,
   badgeSeries: string,
   // Section headings
-  sectionMovies: string,
+  popularMovies: string,
   sectionTvShows: string,
   sectionSeries: string,
   sectionDocumentaries: string,
@@ -20,6 +20,8 @@ type t = {
   tagline: string,
   seeAll: string,
   noContent: string,
+  trendingNow: string,
+  searchResults: string,
 }
 
 let en: t = {
@@ -28,7 +30,7 @@ let en: t = {
   badgeLive: "● Live",
   badgeDocumentary: "Documentary",
   badgeSeries: "Series",
-  sectionMovies: "Movies",
+  popularMovies: "Popular Movies",
   sectionTvShows: "TV Shows",
   sectionSeries: "Series",
   sectionDocumentaries: "Documentaries",
@@ -39,6 +41,8 @@ let en: t = {
   tagline: "Movies, Series & Live",
   seeAll: "See all",
   noContent: "No content available.",
+  trendingNow: "Trending Now",
+  searchResults: "Search Results",
 }
 
 let fr: t = {
@@ -47,7 +51,7 @@ let fr: t = {
   badgeLive: "● Direct",
   badgeDocumentary: "Documentaire",
   badgeSeries: "Série",
-  sectionMovies: "Films",
+  popularMovies: "Films populaires",
   sectionTvShows: "Séries TV",
   sectionSeries: "Séries",
   sectionDocumentaries: "Documentaires",
@@ -58,6 +62,8 @@ let fr: t = {
   tagline: "Films, Séries & Direct",
   seeAll: "Voir tout",
   noContent: "Aucun contenu disponible.",
+  trendingNow: "Tendances du moment",
+  searchResults: "Résultats de recherche",
 }
 
 let useTranslation = (locale: string): t =>

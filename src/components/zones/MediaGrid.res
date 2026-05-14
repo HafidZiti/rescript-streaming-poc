@@ -1,3 +1,7 @@
+@val external fetchApi: string => Promise.t<'res> = "fetch"
+@send external toJson: 'res => Promise.t<Js.Json.t> = "json"
+@val external encodeURIComponent: string => string = "encodeURIComponent"
+
 module Styles = {
   open CssJs
   open CssHelper
@@ -22,44 +26,66 @@ module Styles = {
   ])
 }
 
-let byCategory = (movies, cat) =>
-  movies->Array.filter(m => m.AppTypes.category == cat)
-
 @genType
 @react.component
-let make = (~movies: array<AppTypes.media>) => {
+let make = (
+  ~trendingItems: array<AppTypes.media>,
+  ~seriesItems: array<AppTypes.media>,
+  ~docsItems: array<AppTypes.media>,
+  ~tvShowItems: array<AppTypes.media>,
+  ~popularMoviesItems: array<AppTypes.media>,
+) => {
   let {t} = I18nContext.useI18n()
   let (activeQuery, setActiveQuery) = React.useState(() => "")
+  let (searchItems, setSearchItems) = React.useState(() => [])
+  let (loading, setLoading) = React.useState(() => false)
 
-  let handleSearch = (q: string) =>
-    setActiveQuery(_ => String.toLowerCase(String.trim(q)))
-
-  let filtered = if activeQuery == "" {
-    movies
-  } else {
-    movies->Array.filter(m =>
-      String.includes(String.toLowerCase(m.title), activeQuery) ||
-      String.includes(String.toLowerCase(m.description), activeQuery)
-    )
+  let handleSearch = (q: string) => {
+    let query = String.toLowerCase(String.trim(q))
+    setActiveQuery(_ => query)
+    if query != "" {
+      setLoading(_ => true)
+      setSearchItems(_ => [])
+      let url = "/api/search?q=" ++ encodeURIComponent(query)
+      let _ = fetchApi(url)
+        ->Promise.then(res => res->toJson)
+        ->Promise.then(data => {
+          setSearchItems(_ => Obj.magic(data))
+          setLoading(_ => false)
+          Promise.resolve()
+        })
+        ->Promise.catch(_ => {
+          setLoading(_ => false)
+          Promise.resolve()
+        })
+    }
   }
 
-  let sections = if Array.length(filtered) == 0 && activeQuery != "" {
-    <div className=Styles.emptyState> {React.string(t.noContent)} </div>
+  let mainContent = if activeQuery != "" {
+    if loading {
+      <Spinner />
+    } else if Array.length(searchItems) == 0 {
+      <div className=Styles.emptyState> {React.string(t.noContent)} </div>
+    } else {
+      <ContentRow title=t.searchResults items=searchItems />
+    }
   } else {
     <>
-      <MediaSection category=AppTypes.Movie       items={byCategory(filtered, AppTypes.Movie)} />
-      <MediaSection category=AppTypes.TVShow      items={byCategory(filtered, AppTypes.TVShow)} />
-      <MediaSection category=AppTypes.Series      items={byCategory(filtered, AppTypes.Series)} />
-      <MediaSection category=AppTypes.Documentary items={byCategory(filtered, AppTypes.Documentary)} />
-      <MediaSection category=AppTypes.Live        items={byCategory(filtered, AppTypes.Live)} />
+      <ContentRow title=t.popularMovies        items=popularMoviesItems limit=6 />
+      <ContentRow title=t.sectionTvShows       items=tvShowItems        limit=6 />
+      <ContentRow title=t.sectionSeries        items=seriesItems        limit=6 />
+      <ContentRow title=t.sectionDocumentaries items=docsItems          limit=6 />
     </>
   }
 
   <div className=Styles.container>
     <Navbar />
     <HeroSection onSearch=handleSearch />
+    {activeQuery == ""
+      ? <ContentRow title=t.trendingNow items=trendingItems showDot=true />
+      : React.null}
     <div className=Styles.sections>
-      {sections}
+      {mainContent}
     </div>
   </div>
 }

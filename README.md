@@ -12,6 +12,7 @@ A proof-of-concept streaming catalog built with **ReScript 11** + **Next.js 16**
 | Type bridge | GenType 4.5.0 — generates `.gen.tsx` from `@genType` annotations |
 | i18n        | Pure ReScript — flat translation records, EN/FR                  |
 | React       | `@rescript/react` 0.12.0, JSX v4                                 |
+| Data        | TMDB API — server-side fetch, ISR revalidation                   |
 
 ## Architecture
 
@@ -47,6 +48,14 @@ src/
     ├── AppTypes.res            # contentType variant + media record
     ├── I18n.res                # Translation dictionaries (EN/FR)
     └── MockData.res            # Sample catalog data
+```
+
+### Environment variables
+
+Create a `.env.local` file at the project root:
+
+```bash
+TMDB_READ_ACCESS_TOKEN=your_tmdb_bearer_token
 ```
 
 ## Key design decisions
