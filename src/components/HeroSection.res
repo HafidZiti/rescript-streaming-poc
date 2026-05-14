@@ -1,5 +1,4 @@
 module Styles = {
-  @@warning("-44")
   open CssJs
   open CssHelper
 

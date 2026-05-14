@@ -8,7 +8,6 @@ let langs: array<lang> = [
 
 
 module Styles = {
-  @@warning("-44")
   open CssJs
   open CssHelper
 

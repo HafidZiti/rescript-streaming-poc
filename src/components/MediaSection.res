@@ -1,7 +1,6 @@
 let limit = 6
 
 module Styles = {
-  @@warning("-44")
   open CssJs
   open CssHelper
 
