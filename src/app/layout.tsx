@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import EmotionRegistry from "./EmotionRegistry";
 
 export const metadata: Metadata = {
   title: "Streamify — Films, Séries & Live",
@@ -13,8 +14,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" style={{ margin: 0, padding: 0 }}>
-      <body style={{ margin: 0, padding: 0, overflowX: "hidden" }}>
-        {children}
+      <body
+        style={{
+          margin: 0,
+          padding: 0,
+          overflowX: "hidden",
+          backgroundColor: "#0a0a0f",
+        }}
+      >
+        <EmotionRegistry>{children}</EmotionRegistry>
       </body>
     </html>
   );
