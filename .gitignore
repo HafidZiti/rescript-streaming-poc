@@ -10,6 +10,10 @@
 !.yarn/releases
 !.yarn/versions
 
+# rescript
+/lib
+*.bs.js
+
 # testing
 /coverage
 
