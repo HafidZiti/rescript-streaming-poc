@@ -4,14 +4,14 @@ A proof-of-concept streaming catalog built with **ReScript 11** + **Next.js 16**
 
 ## Stack
 
-| Layer | Technology |
-|---|---|
-| Language | ReScript 11.1.4 (`-open RescriptCore`) |
-| Framework | Next.js 16 — App Router, SSR |
-| Styling | `bs-css-emotion` 7.1.1 — type-safe CSS-in-JS |
+| Layer       | Technology                                                       |
+| ----------- | ---------------------------------------------------------------- |
+| Language    | ReScript 11.1.4 (`-open RescriptCore`)                           |
+| Framework   | Next.js 16 — App Router, SSR                                     |
+| Styling     | `bs-css-emotion` 7.1.1 — type-safe CSS-in-JS                     |
 | Type bridge | GenType 4.5.0 — generates `.gen.tsx` from `@genType` annotations |
-| i18n | Pure ReScript — flat translation records, EN/FR |
-| React | `@rescript/react` 0.12.0, JSX v4 |
+| i18n        | Pure ReScript — flat translation records, EN/FR                  |
+| React       | `@rescript/react` 0.12.0, JSX v4                                 |
 
 ## Architecture
 
@@ -41,7 +41,7 @@ src/
 
 ## Key design decisions
 
-**GenType suffix patching** — GenType 4.5.0 hardcodes `.bs.js` in generated import paths regardless of `rescript.json` config. `scripts/fix-gen-suffix.mjs` rewrites the suffix to `.res.js` post-build and is wired into `npm run rescript` and `npm run build`.
+**GenType suffix patching** — GenType 4.5.0 hardcodes `.bs.js` in generated import paths regardless of `rescript.json` config. `scripts/fix-gen-suffix.mjs` rewrites the suffix to `.res.js` post-build and is wired into `yarn rescript` and `yarn build`.
 
 **`bs-css` poly-variant bridging** — ReScript 11 no longer auto-narrows open polymorphic variants (`[> #px(int)]`) to closed types. `CssHelper.res` wraps every unit/color helper with `Obj.magic`, which is safe since all poly-variant constructors are identity-coercible at runtime in JS.
 
@@ -53,13 +53,13 @@ src/
 
 ```bash
 # Install dependencies
-npm install
+yarn install
 
 # Compile ReScript + patch GenType imports
-npm run rescript
+yarn rescript
 
 # Start dev server
-npm run dev
+yarn dev
 ```
 
 > Open [http://localhost:3000](http://localhost:3000)
@@ -67,29 +67,29 @@ npm run dev
 When editing `.res` files, run the compiler in watch mode in a separate terminal:
 
 ```bash
-npm run rescript:watch
+yarn rescript:watch
 ```
 
 Then in another terminal:
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 ## Build
 
 ```bash
-npm run build   # rescript → fix-gen-suffix → next build
-npm run start
+yarn build   # rescript → fix-gen-suffix → next build
+yarn start
 ```
 
 ## Scripts
 
-| Script | Description |
-|---|---|
-| `npm run rescript` | Compile ReScript + patch GenType suffix |
-| `npm run rescript:watch` | Compile in watch mode |
-| `npm run rescript:clean` | Clean build artifacts |
-| `npm run dev` | Next.js dev server |
-| `npm run build` | Production build (full pipeline) |
-| `npm run lint` | ESLint |
+| Script                | Description                             |
+| --------------------- | --------------------------------------- |
+| `yarn rescript`       | Compile ReScript + patch GenType suffix |
+| `yarn rescript:watch` | Compile in watch mode                   |
+| `yarn rescript:clean` | Clean build artifacts                   |
+| `yarn dev`            | Next.js dev server                      |
+| `yarn build`          | Production build (full pipeline)        |
+| `yarn lint`           | ESLint                                  |
