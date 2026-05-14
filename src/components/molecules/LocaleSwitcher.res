@@ -1,11 +1,9 @@
-
 type lang = {code: string, flag: string, label: string}
 
 let langs: array<lang> = [
   {code: "en", flag: "🇬🇧", label: "English"},
   {code: "fr", flag: "🇫🇷", label: "Français"},
 ]
-
 
 module Styles = {
   open CssJs

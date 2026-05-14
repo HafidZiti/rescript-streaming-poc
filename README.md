@@ -15,28 +15,38 @@ A proof-of-concept streaming catalog built with **ReScript 11** + **Next.js 16**
 
 ## Architecture
 
+The component tree follows **Atomic Design** (atoms → molecules → organisms → zones).
+
 ```
 src/
-├── app/                  # Next.js entry points (TypeScript)
-│   ├── layout.tsx        # Root layout + EmotionRegistry (SSR style injection)
-│   ├── page.tsx          # Client root — mounts I18nProvider + MediaGrid
+├── app/                        # Next.js entry points (TypeScript)
+│   ├── layout.tsx              # Root layout + EmotionRegistry (SSR style injection)
+│   ├── page.tsx                # Client root — mounts I18nProvider + MediaGrid
 │   └── EmotionRegistry.tsx
 ├── bindings/
-│   └── CssHelper.res     # Obj.magic wrappers for bs-css poly-variant types
+│   └── CssHelper.res           # Obj.magic wrappers for bs-css poly-variant types
 ├── components/
-│   ├── Shared/
-│   │   └── LocaleSwitcher.res
-│   ├── HeroSection.res
-│   ├── MediaCard.res
-│   ├── MediaGrid.res     # Search state + catalog filtering
-│   ├── MediaSection.res  # Per-category horizontal scroll row
-│   └── Navbar.res
+│   ├── atoms/                  # Primitive, stateless UI elements
+│   │   ├── Button.res          # Red CTA button
+│   │   ├── CategoryBadge.res   # Colored category pill (top-right of card)
+│   │   ├── Logo.res            # "S" icon + "Streamify" wordmark
+│   │   └── RatingBadge.res     # ★ rating pill (top-left of card)
+│   ├── molecules/              # Compositions of atoms with a single responsibility
+│   │   ├── LocaleSwitcher.res  # Flag dropdown — trigger + panel
+│   │   ├── MediaCard.res       # Poster + RatingBadge + CategoryBadge + overlay
+│   │   └── SearchBar.res       # Input + Button, manages query state internally
+│   ├── organisms/              # Autonomous page sections
+│   │   ├── HeroSection.res     # Background image + title + SearchBar
+│   │   ├── MediaSection.res    # Category heading + horizontal scroll row of MediaCards
+│   │   └── Navbar.res          # Sticky nav — Logo + LocaleSwitcher
+│   └── zones/                  # Page-level layout templates
+│       └── MediaGrid.res       # Composes all organisms; owns search + filter state
 ├── contexts/
-│   └── I18nContext.res   # React context + useI18n hook (@genType provider)
+│   └── I18nContext.res         # React context + useI18n hook (@genType provider)
 └── core/
-    ├── AppTypes.res       # contentType variant + media record
-    ├── I18n.res           # Translation dictionaries
-    └── MockData.res       # Sample catalog data
+    ├── AppTypes.res            # contentType variant + media record
+    ├── I18n.res                # Translation dictionaries (EN/FR)
+    └── MockData.res            # Sample catalog data
 ```
 
 ## Key design decisions

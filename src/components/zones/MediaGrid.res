@@ -22,7 +22,6 @@ module Styles = {
   ])
 }
 
-
 let byCategory = (movies, cat) =>
   movies->Array.filter(m => m.AppTypes.category == cat)
 
