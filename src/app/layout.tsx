@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
+import { Lato } from "next/font/google";
 import EmotionRegistry from "./EmotionRegistry";
+
+const lato = Lato({
+  subsets: ["latin"],
+  weight: ["300", "400", "700", "900"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Streamify — Films, Séries & Live",
@@ -13,7 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" style={{ margin: 0, padding: 0 }}>
+    <html
+      lang="en"
+      className={lato.className}
+      style={{ margin: 0, padding: 0 }}
+    >
       <body
         style={{
           margin: 0,

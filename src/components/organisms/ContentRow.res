@@ -1,5 +1,3 @@
-let limit = 6
-
 module Styles = {
   open CssJs
   open CssHelper
@@ -8,12 +6,26 @@ module Styles = {
     marginBottom(px(48)),
   ])
 
-  let sectionHeader = style([
+  let header = style([
     display(#flex),
     alignItems(#center),
     justifyContent(#spaceBetween),
     marginBottom(px(16)),
     padding2(~v=px(0), ~h=px(36)),
+  ])
+
+  let headerLeft = style([
+    display(#flex),
+    alignItems(#center),
+    gap(px(10)),
+  ])
+
+  let dot = style([
+    width(px(8)),
+    height(px(8)),
+    borderRadius(pct(50.)),
+    backgroundColor(hex("e50914")),
+    flexShrink(0.),
   ])
 
   let title = style([
@@ -36,7 +48,6 @@ module Styles = {
     hover([color(hex("ff4444"))]),
   ])
 
-  // Horizontal scroll strip — no visible scrollbar on webkit
   let row = style([
     display(#flex),
     flexDirection(#row),
@@ -45,9 +56,17 @@ module Styles = {
     paddingLeft(px(36)),
     paddingRight(px(36)),
     paddingBottom(px(12)),
+    unsafe("scrollbarWidth", "thin"),
+    unsafe("scrollbarColor", "#444 transparent"),
+    selector("::-webkit-scrollbar", [height(px(4))]),
+    selector("::-webkit-scrollbar-track", [unsafe("background", "transparent")]),
+    selector("::-webkit-scrollbar-thumb", [
+      unsafe("background", "#444"),
+      unsafe("borderRadius", "2px"),
+    ]),
+    selector("::-webkit-scrollbar-thumb:hover", [unsafe("background", "#666")]),
   ])
 
-  // Fixed-width wrapper so cards don't squish inside the flex row
   let cardWrapper = style([
     minWidth(px(200)),
     maxWidth(px(260)),
@@ -58,32 +77,32 @@ module Styles = {
 }
 
 @react.component
-let make = (~category: AppTypes.contentType, ~items: array<AppTypes.media>) => {
+let make = (
+  ~title: string,
+  ~items: array<AppTypes.media>,
+  ~showDot: bool=false,
+  ~limit: int=0,
+) => {
   let {t} = I18nContext.useI18n()
   let (expanded, setExpanded) = React.useState(() => false)
 
-  let title = switch category {
-  | Movie       => t.sectionMovies
-  | TVShow      => t.sectionTvShows
-  | Series      => t.sectionSeries
-  | Documentary => t.sectionDocumentaries
-  | Live        => t.sectionLive
-  }
+  let hasMore = limit > 0 && Array.length(items) > limit
 
-  let hasMore = Array.length(items) > limit
-
-  let displayed = if expanded {
-    items
-  } else {
+  let displayed = if limit > 0 && !expanded {
     items->Array.filterWithIndex((_item, i) => i < limit)
+  } else {
+    items
   }
 
   if Array.length(items) == 0 {
     React.null
   } else {
     <div className=Styles.section>
-      <div className=Styles.sectionHeader>
-        <h2 className=Styles.title> {React.string(title)} </h2>
+      <div className=Styles.header>
+        <div className=Styles.headerLeft>
+          {showDot ? <div className=Styles.dot /> : React.null}
+          <h2 className=Styles.title> {React.string(title)} </h2>
+        </div>
         {hasMore && !expanded
           ? <button
               className=Styles.seeAllBtn
