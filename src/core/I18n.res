@@ -22,6 +22,9 @@ type t = {
   noContent: string,
   trendingNow: string,
   searchResults: string,
+  backToHome: string,
+  detailRuntime: string,
+  detailSeasons: string,
 }
 
 let en: t = {
@@ -43,6 +46,9 @@ let en: t = {
   noContent: "No content available.",
   trendingNow: "Trending Now",
   searchResults: "Search Results",
+  backToHome: "← Back",
+  detailRuntime: "Runtime",
+  detailSeasons: "seasons",
 }
 
 let fr: t = {
@@ -64,6 +70,9 @@ let fr: t = {
   noContent: "Aucun contenu disponible.",
   trendingNow: "Tendances du moment",
   searchResults: "Résultats de recherche",
+  backToHome: "← Retour",
+  detailRuntime: "Durée",
+  detailSeasons: "saisons",
 }
 
 let useTranslation = (locale: string): t =>

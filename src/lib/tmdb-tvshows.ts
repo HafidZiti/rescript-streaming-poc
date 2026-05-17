@@ -11,7 +11,7 @@ export async function fetchTvShows(): Promise<media[]> {
     .filter((s) => isSafe(s.name, s.adult))
     .slice(0, 20)
     .map((s) => ({
-      id: `tv-top-${s.id}`,
+      id: `tv:${s.id}`,
       title: s.name,
       thumbnail: s.poster_path
         ? `https://image.tmdb.org/t/p/w500${s.poster_path}`

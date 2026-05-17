@@ -51,21 +51,45 @@ module Styles = {
     fontSize(px(12)),
     color(rgba(255, 255, 255, 0.5)),
   ])
+
+  let link = style([
+    display(#block),
+    unsafe("textDecoration", "none"),
+    unsafe("color", "inherit"),
+  ])
 }
 
 @genType
 @react.component
-let make = (~media: AppTypes.media) =>
-  <div className=Styles.card>
-    <img className=Styles.image src=media.thumbnail alt=media.title />
-    <RatingBadge rating=media.rating />
-    <CategoryBadge category=media.category />
-    <div className=Styles.overlay>
-      <h3 className=Styles.title> {React.string(media.title)} </h3>
-      <div className=Styles.meta>
-        <span> {React.int(media.year)} </span>
-        <span> {React.string("·")} </span>
-        <span> {React.string(media.duration)} </span>
+let make = (~media: AppTypes.media) => {
+  let parts = Js.String2.split(media.id, ":")
+  let tmdbType = parts->Array.at(0)->Option.getOr("")
+  let tmdbId = parts->Array.at(1)->Option.getOr("")
+  let href =
+    if tmdbType == "" || tmdbId == "" {
+      ""
+    } else {
+      "/media/" ++ tmdbType ++ "/" ++ tmdbId
+    }
+
+  let card =
+    <div className=Styles.card>
+      <img className=Styles.image src=media.thumbnail alt=media.title />
+      <RatingBadge rating=media.rating />
+      <CategoryBadge category=media.category />
+      <div className=Styles.overlay>
+        <h3 className=Styles.title> {React.string(media.title)} </h3>
+        <div className=Styles.meta>
+          <span> {React.int(media.year)} </span>
+          <span> {React.string("·")} </span>
+          <span> {React.string(media.duration)} </span>
+        </div>
       </div>
     </div>
-  </div>
+
+  if href == "" {
+    card
+  } else {
+    <NextLink href className=Styles.link> {card} </NextLink>
+  }
+}

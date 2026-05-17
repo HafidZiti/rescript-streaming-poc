@@ -42,7 +42,7 @@ export async function searchTmdb(query: string): Promise<media[]> {
         const title = isMovie ? (r.title ?? "") : (r.name ?? "");
         const date = isMovie ? r.release_date : r.first_air_date;
         return {
-          id: `search-${r.media_type}-${r.id}`,
+          id: `${r.media_type}:${r.id}`,
           title,
           thumbnail: r.poster_path
             ? `https://image.tmdb.org/t/p/w500${r.poster_path}`

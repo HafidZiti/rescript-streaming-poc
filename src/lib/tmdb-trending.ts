@@ -11,7 +11,7 @@ export async function fetchTrending(): Promise<media[]> {
     .filter((m) => isSafe(m.title, m.adult))
     .slice(0, 20)
     .map((m) => ({
-      id: String(m.id),
+      id: `movie:${m.id}`,
       title: m.title,
       thumbnail: m.poster_path
         ? `https://image.tmdb.org/t/p/w500${m.poster_path}`
