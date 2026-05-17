@@ -17,3 +17,20 @@ type media = {
   duration: string,
   rating: float,
 }
+
+@genType
+type mediaDetail = {
+  id: string,
+  tmdbType: string,
+  title: string,
+  tagline: string,
+  overview: string,
+  backdrop: string,
+  poster: string,
+  year: int,
+  runtime: int,
+  rating: float,
+  genres: array<string>,
+  status: string,
+  numberOfSeasons: int,
+}

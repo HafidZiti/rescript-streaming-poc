@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { searchTmdb } from "../../../lib/tmdb-search";
+import { searchTmdb } from "../../../lib/TmdbFetchers.gen";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

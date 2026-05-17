@@ -14,3 +14,7 @@ let scale = (x: float, y: float) => Obj.magic(#scale((x, y)))
 let zero = Obj.magic(#zero)
 let bgUrl = (src: string) => Obj.magic(#url(src))
 
+// Responsive breakpoints (desktop-first, max-width)
+let md = "(max-width: 900px)"
+let sm = "(max-width: 640px)"
+
