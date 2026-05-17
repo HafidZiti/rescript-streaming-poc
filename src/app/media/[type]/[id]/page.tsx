@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { fetchMediaDetail } from "../../../../lib/tmdb-detail";
+import { fetchMediaDetail } from "../../../../lib/TmdbDetail.gen";
 import DetailClient from "./DetailClient";
 
 type Props = {
@@ -13,7 +13,7 @@ export default async function MediaDetailPage({ params }: Props) {
     notFound();
   }
 
-  const detail = await fetchMediaDetail(type as "movie" | "tv", id);
+  const detail = await fetchMediaDetail(type, id);
 
   if (!detail) {
     notFound();
