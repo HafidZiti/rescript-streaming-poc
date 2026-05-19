@@ -1,33 +1,17 @@
 "use client";
 
 import { make as I18nProvider } from "../contexts/I18nContext.gen";
-import { make as MediaGrid } from "../components/zones/MediaGrid.gen";
-import type { media } from "../core/AppTypes.gen";
-
-type Props = {
-  trendingItems: media[];
-  seriesItems: media[];
-  docsItems: media[];
-  tvShowItems: media[];
-  popularMoviesItems: media[];
-};
+import { make as Navbar } from "../components/organisms/Navbar.gen";
 
 export default function ClientLayout({
-  trendingItems,
-  seriesItems,
-  docsItems,
-  tvShowItems,
-  popularMoviesItems,
-}: Props) {
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <I18nProvider>
-      <MediaGrid
-        trendingItems={trendingItems}
-        seriesItems={seriesItems}
-        docsItems={docsItems}
-        tvShowItems={tvShowItems}
-        popularMoviesItems={popularMoviesItems}
-      />
+      <Navbar />
+      {children}
     </I18nProvider>
   );
 }

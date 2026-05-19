@@ -23,6 +23,19 @@ if (suffix === ".bs.js") {
 
 let patched = 0;
 
+// Gen files that export React components or hooks need "use client" so Next.js
+// doesn't attempt to evaluate them (and their transitive CJS deps) on the server.
+const CLIENT_GEN_MARKER = "/* use-client-gen */";
+const USE_CLIENT_BANNER = `"use client";\n// ${CLIENT_GEN_MARKER}\n`;
+
+function needsUseClient(src) {
+  // Heuristic: if the gen file exports a React component (make) or a hook, it's client-only.
+  return (
+    !src.includes('"use client"') &&
+    (src.includes("React.ComponentType") || src.includes("useI18n"))
+  );
+}
+
 function walk(dir) {
   for (const entry of readdirSync(dir)) {
     const full = join(dir, entry);
@@ -30,7 +43,10 @@ function walk(dir) {
       walk(full);
     } else if (entry.endsWith(".gen.tsx") || entry.endsWith(".gen.ts")) {
       const src = readFileSync(full, "utf8");
-      const fixed = src.replaceAll(".bs.js", suffix);
+      let fixed = src.replaceAll(".bs.js", suffix);
+      if (needsUseClient(fixed)) {
+        fixed = USE_CLIENT_BANNER + fixed;
+      }
       if (fixed !== src) {
         writeFileSync(full, fixed);
         patched++;

@@ -25,4 +25,5 @@ let make = (~children: React.element) => {
   <ContextProvider value> children </ContextProvider>
 }
 
+@genType
 let useI18n = () => React.useContext(context)

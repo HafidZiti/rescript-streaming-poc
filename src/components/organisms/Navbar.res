@@ -17,6 +17,7 @@ module Styles = {
   ])
 }
 
+@genType
 @react.component
 let make = () =>
   <nav className=Styles.nav>

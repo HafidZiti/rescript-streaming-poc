@@ -13,12 +13,13 @@ module Styles = {
     width(px(48)),
     height(px(48)),
     borderRadius(pct(50.)),
-    unsafe("border", "4px solid rgba(255,255,255,0.1)"),
+    unsafe("border", "4px solid rgba(28, 18, 18, 0.1)"),
     unsafe("borderTopColor", "#e50914"),
     unsafe("animation", "streamify-spin 0.75s linear infinite"),
   ])
 }
 
+@genType
 @react.component
 let make = () =>
   <div className=Styles.wrapper>

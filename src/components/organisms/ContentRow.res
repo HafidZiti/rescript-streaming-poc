@@ -76,6 +76,7 @@ module Styles = {
   ])
 }
 
+@genType
 @react.component
 let make = (
   ~title: string,

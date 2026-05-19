@@ -171,28 +171,24 @@ let fetchListItems = async (url: string): array<JSON.t> =>
   switch Nullable.toOption(tmdbToken) {
   | None => []
   | Some(token) =>
-    try {
-      let res = await fetchIsr(url, {
-        headers: Dict.fromArray([
-          ("Authorization", `Bearer ${token}`),
-          ("accept", "application/json"),
-        ]),
-        next: {revalidate: 3600},
-      })
-      if ok(res) {
-        switch await responseJson(res) {
-        | JSON.Object(obj) =>
-          switch obj->Dict.get("results") {
-          | Some(JSON.Array(arr)) => arr
-          | _ => []
-          }
+    let res = await fetchIsr(url, {
+      headers: Dict.fromArray([
+        ("Authorization", `Bearer ${token}`),
+        ("accept", "application/json"),
+      ]),
+      next: {revalidate: 3600},
+    })
+    if ok(res) {
+      switch await responseJson(res) {
+      | JSON.Object(obj) =>
+        switch obj->Dict.get("results") {
+        | Some(JSON.Array(arr)) => arr
         | _ => []
         }
-      } else {
-        []
+      | _ => []
       }
-    } catch {
-    | _ => []
+    } else {
+      Js.Exn.raiseError(`TMDB fetch failed: ${url}`)
     }
   }
 
