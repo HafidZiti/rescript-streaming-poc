@@ -8,11 +8,14 @@ import DocsSection from "./sections/DocsSection";
 import TvShowsSection from "./sections/TvShowsSection";
 import SearchResultsSection from "./sections/SearchResultsSection";
 
-type SearchParams = Promise<{ q?: string }>;
+type SearchParams = Promise<{ q?: string | string[] }>;
 
 export default async function Home(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;
-  const q = (searchParams.q ?? "").trim();
+  const rawQ = Array.isArray(searchParams.q)
+    ? (searchParams.q[0] ?? "")
+    : (searchParams.q ?? "");
+  const q = rawQ.trim();
 
   return (
     <ClientLayout>
