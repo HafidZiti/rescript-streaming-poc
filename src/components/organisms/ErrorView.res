@@ -51,5 +51,11 @@ let make = (~error: nextError, ~reset: unit => unit) => {
   <div className=Styles.container>
     <h2 className=Styles.title> {React.string(t.errorTitle)} </h2>
     <p className=Styles.msg> {React.string(message)} </p>
+    <button
+      className=Styles.retryBtn
+      onClick={_ => reset()}
+      type_="button">
+      {React.string("Retry")}
+    </button>
   </div>
 }
