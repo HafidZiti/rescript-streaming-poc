@@ -1,4 +1,5 @@
 // Flat record — add new keys here; the compiler will enforce every locale has them.
+@genType
 type t = {
   // Content-type badge labels
   badgeMovie: string,
@@ -25,6 +26,10 @@ type t = {
   backToHome: string,
   detailRuntime: string,
   detailSeasons: string,
+  // Error boundary
+  errorTitle: string,
+  errorFallback: string,
+  errorRetry: string,
 }
 
 let en: t = {
@@ -49,6 +54,9 @@ let en: t = {
   backToHome: "← Back",
   detailRuntime: "Runtime",
   detailSeasons: "seasons",
+  errorTitle: "Oops, something went wrong",
+  errorFallback: "An unexpected error occurred.",
+  errorRetry: "Retry",
 }
 
 let fr: t = {
@@ -73,6 +81,9 @@ let fr: t = {
   backToHome: "← Retour",
   detailRuntime: "Durée",
   detailSeasons: "saisons",
+  errorTitle: "Oops, quelque chose s'est mal passé",
+  errorFallback: "Une erreur inattendue est survenue.",
+  errorRetry: "Réessayer",
 }
 
 let useTranslation = (locale: string): t =>

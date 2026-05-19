@@ -24,8 +24,8 @@ module Styles = {
 }
 
 @react.component
-let make = (~placeholder: string, ~btnLabel: string, ~onSearch: string => unit) => {
-  let (query, setQuery) = React.useState(() => "")
+let make = (~placeholder: string, ~btnLabel: string, ~onSearch: string => unit, ~initialValue: string="") => {
+  let (query, setQuery) = React.useState(() => initialValue)
   let handleSearch = () => onSearch(query)
 
   <div className=Styles.bar>

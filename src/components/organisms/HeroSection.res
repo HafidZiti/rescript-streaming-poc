@@ -48,8 +48,9 @@ module Styles = {
   ])
 }
 
+@genType
 @react.component
-let make = (~onSearch: string => unit) => {
+let make = (~onSearch: string => unit, ~initialQuery: string="") => {
   let {t} = I18nContext.useI18n()
 
   <div className=Styles.hero>
@@ -60,6 +61,7 @@ let make = (~onSearch: string => unit) => {
         placeholder=t.searchPlaceholder
         btnLabel=t.searchBtn
         onSearch
+        initialValue=initialQuery
       />
     </div>
   </div>
